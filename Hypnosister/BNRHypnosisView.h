@@ -1,5 +1,5 @@
 //
-//  BNRAppDelegate.h
+//  BNRHypnosisView.h
 //  Hypnosister
 //
 //  Created by Sandquist, Cassandra G on 5/23/14.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BNRAppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow* window;
+@interface BNRHypnosisView : UIView
 
 @end
