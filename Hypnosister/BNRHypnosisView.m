@@ -47,6 +47,10 @@
     [[UIColor lightGrayColor] setStroke];
 
     [bezierPath stroke];
+
+    UIImage* logoImage = [UIImage imageNamed:@"logo"];
+    CGRect someRect = CGRectMake(CGRectGetMidX(bounds) / 2.0, CGRectGetMidY(bounds) / 2.0, bounds.size.width / 2.0, bounds.size.height / 2.0);
+    [logoImage drawInRect:someRect];
 }
 
 @end
