@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -29,15 +30,22 @@
     CGPoint center;
     center.x = bounds.origin.x + bounds.size.width / 2.0;
     center.y = bounds.origin.y + bounds.size.height / 2.0;
-    float radius = MIN(bounds.size.height, bounds.size.width) / 2.0;
+    float maxRadius = hypot(bounds.size.height, bounds.size.width) / 2.0;
 
     UIBezierPath* bezierPath = [[UIBezierPath alloc] init];
 
-    [bezierPath addArcWithCenter:center
-                          radius:radius
-                      startAngle:0
-                        endAngle:M_PI * 2
-                       clockwise:YES];
+    for (float currentRadius = maxRadius; currentRadius > 0; currentRadius -= 20) {
+        [bezierPath moveToPoint:CGPointMake(center.x + currentRadius, center.y)];
+        [bezierPath addArcWithCenter:center
+                              radius:currentRadius
+                          startAngle:0.0
+                            endAngle:M_PI * 2.0
+                           clockwise:YES];
+    }
+    [bezierPath setLineWidth:10];
+
+    [[UIColor lightGrayColor] setStroke];
+
     [bezierPath stroke];
 }
 
