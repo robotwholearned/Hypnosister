@@ -48,9 +48,15 @@
 
     [bezierPath stroke];
 
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(currentContext);
+    CGContextSetShadow(currentContext, CGSizeMake(4, 7), 3);
+
     UIImage* logoImage = [UIImage imageNamed:@"logo"];
     CGRect someRect = CGRectMake(CGRectGetMidX(bounds) / 2.0, CGRectGetMidY(bounds) / 2.0, bounds.size.width / 2.0, bounds.size.height / 2.0);
     [logoImage drawInRect:someRect];
+
+    CGContextRestoreGState(currentContext);
 }
 
 @end
