@@ -48,15 +48,58 @@
 
     [bezierPath stroke];
 
-    CGContextRef currentContext = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(currentContext);
-    CGContextSetShadow(currentContext, CGSizeMake(4, 7), 3);
-
     UIImage* logoImage = [UIImage imageNamed:@"logo"];
     CGRect someRect = CGRectMake(CGRectGetMidX(bounds) / 2.0, CGRectGetMidY(bounds) / 2.0, bounds.size.width / 2.0, bounds.size.height / 2.0);
-    [logoImage drawInRect:someRect];
+
+    UIBezierPath* triangle = [[UIBezierPath alloc] init];
+
+    CGPoint startTrianglePoint = CGPointMake(bounds.size.width / 2.0, someRect.origin.y);
+    CGPoint secondTrianglePoint = CGPointMake(someRect.size.width + someRect.origin.x, someRect.size.height + someRect.origin.y);
+    CGPoint thirdTrianglePoint = CGPointMake(someRect.origin.x, someRect.origin.y + someRect.size.height);
+
+    [triangle moveToPoint:startTrianglePoint];
+    [triangle addLineToPoint:secondTrianglePoint];
+    [triangle addLineToPoint:thirdTrianglePoint];
+    [triangle addLineToPoint:startTrianglePoint];
+    [triangle stroke];
+
+    //draw triangle with gradient
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(currentContext);
+
+    [triangle addClip];
+
+    CGFloat locations[2] = {
+        0.0,
+        1.0
+    };
+    CGFloat components[8] = {
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+    };
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+
+    CGGradientRef gradientRef = CGGradientCreateWithColorComponents(colorSpaceRef, components, locations, 2);
+
+    CGContextDrawLinearGradient(currentContext, gradientRef, startTrianglePoint, secondTrianglePoint, 0);
+    CGGradientRelease(gradientRef);
 
     CGContextRestoreGState(currentContext);
+
+    //draw logo with shadow
+    CGContextRef nextCurrentContext = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(nextCurrentContext);
+
+    CGContextSetShadow(currentContext, CGSizeMake(4, 7), 3);
+    [logoImage drawInRect:someRect];
+
+    CGContextRestoreGState(nextCurrentContext);
 }
 
 @end
